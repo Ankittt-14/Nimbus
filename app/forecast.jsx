@@ -2,7 +2,6 @@ import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useEffect, useRef, useState } from "react";
 import { Animated, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
 import { useWeather } from "../hooks/useWeather";
 import { formatDay } from "../utils/weatherHelpers";
 
@@ -60,23 +59,20 @@ export default function ForecastScreen() {
                         </View>
                     </View>
                     <View style={styles.radarMap}>
-                        {lat !== 0 && lon !== 0 ? (
-                            <MapView
-                                style={{ width: "100%", height: "100%", borderRadius: 12 }}
-                                initialRegion={{
-                                    latitude: lat,
-                                    longitude: lon,
-                                    latitudeDelta: 0.5,
-                                    longitudeDelta: 0.5,
-                                }}
-                                scrollEnabled={false}
-                                zoomEnabled={false}
-                            >
-                                <Marker coordinate={{ latitude: lat, longitude: lon }} title={weather?.name} />
-                            </MapView>
-                        ) : (
-                            <Text style={styles.radarCity}>📍 {forecast.city?.name}, {forecast.city?.country}</Text>
-                        )}
+                        <View style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center', backgroundColor: '#130A02', borderRadius: 12 }}>
+                            {/* Radar Grid overlay simulation */}
+                            <View style={{ position: 'absolute', width: '100%', height: '100%', borderWidth: 1, borderColor: 'rgba(232, 137, 26, 0.1)', borderRadius: 12 }} />
+                            <View style={{ position: 'absolute', width: '50%', height: '100%', borderRightWidth: 1, borderRightColor: 'rgba(232, 137, 26, 0.1)' }} />
+                            <View style={{ position: 'absolute', width: '100%', height: '50%', borderBottomWidth: 1, borderBottomColor: 'rgba(232, 137, 26, 0.1)' }} />
+
+                            <Feather name="navigation" size={28} color="#E8891A" style={{ marginBottom: 12, opacity: 0.9, transform: [{ rotate: '45deg' }] }} />
+                            <Text style={styles.radarCity}>📍 {forecast.city?.name || weather?.name}, {forecast.city?.country || weather?.sys?.country}</Text>
+                            {lat !== 0 && lon !== 0 && (
+                                <Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 4, letterSpacing: 1 }}>
+                                    LAT: {lat.toFixed(4)}°   LON: {lon.toFixed(4)}°
+                                </Text>
+                            )}
+                        </View>
                     </View>
                 </View>
             </ScrollView>
