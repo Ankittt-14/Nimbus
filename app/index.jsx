@@ -1,7 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from "expo-linear-gradient";
-import LottieView from "lottie-react-native";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Animated, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useWeather } from "../hooks/useWeather";
@@ -73,18 +72,14 @@ export default function HomeScreen() {
                     <View style={styles.bellBtn}><Text>🔔</Text></View>
                 </View>
 
-                {/* Spinning animated sun (or moon) */}
-                <View style={styles.sunContainer}>
-                    {isNight && weather?.weather[0]?.main === 'Clear' ? (
-                        <Text style={styles.sunIcon}>🌙</Text>
-                    ) : (
-                        <LottieView
-                            source={ANIMATIONS[weather?.weather[0]?.main] || ANIMATIONS.Clear}
-                            autoPlay
-                            loop
-                            style={{ width: 180, height: 180 }}
-                        />
-                    )}
+                {/* Weather Vector Icon */}
+                <View style={[styles.sunContainer, {
+                    width: 150, height: 150, borderRadius: 75,
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    justifyContent: 'center', alignItems: 'center',
+                    borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)'
+                }]}>
+                    <Feather name={getFeatherIcon(weather?.weather[0]?.main, weather?.weather[0]?.icon)} size={72} color={getFeatherColor(weather?.weather[0]?.main, weather?.weather[0]?.icon)} />
                 </View>
 
                 {/* Big temperature display */}
@@ -167,19 +162,15 @@ function SkeletonHome() {
     );
 }
 
-const ANIMATIONS = {
-    Clear: require("../assets/animations/sun.json"),
-    Rain: require("../assets/animations/rain.json"),
-    Clouds: require("../assets/animations/cloud.json"),
-    Thunderstorm: require("../assets/animations/thunder.json"),
-    Snow: require("../assets/animations/snow.json"),
-};
-
-function getEmoji(c, icon) {
-    if (icon?.endsWith('n') && c === 'Clear') return "🌙";
-    return { Clear: "☀️", Clouds: "⛅", Rain: "🌧️", Thunderstorm: "⛈️", Snow: "❄️" }[c] || "🌡️";
+function getFeatherIcon(c, icon) {
+    if (icon?.endsWith('n') && c === 'Clear') return "moon";
+    return { Clear: "sun", Clouds: "cloud", Rain: "cloud-rain", Thunderstorm: "cloud-lightning", Snow: "cloud-snow" }[c] || "thermometer";
 }
 
+function getFeatherColor(c, icon) {
+    if (icon?.endsWith('n') && c === 'Clear') return "#60a5fa";
+    return { Clear: "#fbbf24", Clouds: "#9ca3af", Rain: "#60a5fa", Thunderstorm: "#818cf8", Snow: "#e2e8f0" }[c] || "#f87171";
+}
 
 const styles = StyleSheet.create({
     container: { flex: 1, paddingTop: 50 },
