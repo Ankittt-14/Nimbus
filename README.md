@@ -1,150 +1,108 @@
-# ?? Nimbus
+<div align="center">
 
-### Your Sky, Simplified
+  <h1>🌤️ Atmosphere | Premium Weather App</h1>
+  
+  <p>
+    <b>A beautifully crafted, deeply responsive, and animated weather experience built with React Native & Expo.</b>
+  </p>
 
-A **cinematic weather application** built with **React Native and Expo** that transforms ordinary weather data into a beautiful, immersive experience.
-Nimbus combines **dynamic theming, smooth animations, and real-time weather intelligence** to create a premium forecasting interface.
-
----
-
-## ? Features
-
-?? **Cinematic Launch Screen**
-A beautifully animated startup sequence with sunrise glow, stars, and atmospheric visuals.
-
-?? **Dynamic Weather Themes**
-Background gradients automatically adapt to the current weather using expo-linear-gradient.
-
-?? **Live Radar Display**
-A stylized radar interface that provides a quick visual snapshot of regional weather conditions.
-
-?? **Smart Location Detection**
-Automatically fetch weather using your **GPS location** or search any city worldwide.
-
-?? **Lightning Fast Search**
-Instant weather lookup with a clean, minimal search interface.
-
-?? **Haptic Feedback**
-Subtle tactile feedback across interactions using expo-haptics.
-
-?? **Lightweight & Fast**
-Optimized vector icons and minimal dependencies for smooth performance.
+  <p>
+    <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native" />
+    <img src="https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
+    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
+  </p>
+  
+  <p>
+    <a href="#features">Features</a> •
+    <a href="#installation">Installation</a> •
+    <a href="#showcase">Showcase</a> •
+    <a href="#technologies">Technologies</a>
+  </p>
+</div>
 
 ---
 
-## ?? Screenshots
+## ✨ Overview
 
-*(Add your screenshots here)*
-
-| Home Screen                | Search Screen                  | Weather Details                  |
-| -------------------------- | ------------------------------ | -------------------------------- |
-| ![Home](./assets/home.png) | ![Search](./assets/search.png) | ![Weather](./assets/weather.png) |
+This Weather app goes beyond just showing the temperature. Designed to feel **premium and fluid**, it leverages native device features like **haptic feedback**, **staggered animations**, and **dynamic gradients** to provide an unmatched user experience. Whether it is raining, snowing, or bright and sunny, the UI adapts seamlessly to reflect the current sky.
 
 ---
 
-## ??? Tech Stack
+## 🚀 Features
 
-| Technology               | Purpose                    |
-| ------------------------ | -------------------------- |
-| **React Native**         | Core mobile framework      |
-| **Expo (SDK 54)**        | Development platform       |
-| **Expo Router**          | File-based navigation      |
-| **Axios**                | API requests               |
-| **AsyncStorage**         | Save recent searches       |
-| **Expo Linear Gradient** | Dynamic background theming |
-| **Expo Haptics**         | Tactile feedback           |
-| **Feather Icons**        | Lightweight vector icons   |
+🌟 **Stunning Adaptive UI**
+The background completely morphs its color palette using smooth `LinearGradient` transitions depending on whether it's daytime, raining, snowing, or a clear night.
+
+🌡️ **Live Weather & Hourly Forecast**
+Get real-time statistics including "Feels Like", "Highs & Lows", and detailed hourly breakdowns to plan your day.
+
+🗓️ **7-Day Animated Forecast**
+Swipe through your week with beautiful, staggered entry animations for each day's forecast block. 
+
+📡 **Regional Radar UI**
+A sleek, simulated live radar map interface to give a highly technical and professional feel to location tracking.
+
+📳 **Native Polish**
+- **Pull-to-Refresh** with satisfying device haptics.
+- **Skeleton Loaders** for a fluid perceived performance while fetching data.
+- **Feather Icons** perfectly mapped to every atmospheric condition.
 
 ---
 
-## ?? Weather Data
+## 📸 Component Showcase
 
-Nimbus uses the **OpenWeatherMap API** to fetch real-time weather information.
+### 1️⃣ The Home Dashboard
+> *Your daily command center.* Features current location, temperature, conditions, and a beautifully horizontal scrollable hourly forecast.
+
+### 2️⃣ The Weekly Outlook
+> *Plan ahead with style.* A vertical list of the next 7 days, complete with highs/lows and a built-in regional radar widget at the bottom.
+
+*(Screenshots can be added here once the app is published!)*
 
 ---
 
-## ?? Getting Started
+## 🛠️ Built With
 
-### 1?? Clone the repository
+* **[React Native](https://reactnative.dev/)** - Core framework
+* **[Expo Router](https://docs.expo.dev/router/introduction/)** - File-based routing for React Native
+* **[Expo Location](https://docs.expo.dev/versions/latest/sdk/location/)** - GPS coord tracking
+* **[Expo Haptics](https://docs.expo.dev/versions/latest/sdk/haptics/)** - Physical device vibrations
+* **[Axios](https://axios-http.com/)** - Rock-solid API client 
 
-`ash
-git clone https://github.com/Ankittt-14/Nimbus.git
-cd Nimbus
-`
+---
 
-### 2?? Install dependencies
+## ⚙️ Installation & Running Locally
 
-`ash
+Want to test this gorgeous UI on your own device? It's incredibly simple!
+
+**1. Clone the repository**
+```bash
+git clone https://github.com/your-username/Weather.git
+cd Weather
+```
+
+**2. Install dependencies**
+```bash
 npm install
-`
+```
 
-### 3?? Add your API key
-
-Create a .env file:
-
-`env
-EXPO_PUBLIC_WEATHER_API_KEY=your_api_key_here
-`
-
-You can get a free API key from **OpenWeatherMap**.
-
----
-
-### 4?? Run the app
-
-`ash
+**3. Start the Expo server**
+```bash
 npx expo start
-`
+```
 
-Scan the QR code using the **Expo Go** app.
-
----
-
-## ?? Build APK
-
-Using **Expo Application Services (EAS)**:
-
-`ash
-npm install -g eas-cli
-eas login
-eas build -p android --profile preview
-`
-
-This will generate a **shareable Android APK**.
+**4. Run on your device**
+- Press `a` to run on Android Emulator.
+- Press `i` to run on iOS Simulator.
+- Or simply scan the QR code with the **Expo Go** app on your physical phone!
 
 ---
 
-## ?? Project Structure
+## 🌟 Spread the Love
 
-`
-app/
-components/
-assets/
-utils/
-constants/
-`
+If you liked this project or found it helpful for learning React Native animations, please considering giving it a **⭐️ Star** on GitHub to help others find it!
 
----
-
-## ?? Contributing
-
-Contributions are welcome.
-
-1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Submit a Pull Request
-
----
-
-## ?? License
-
-This project is licensed under the **MIT License**.
-
----
-
-## ????? Author
-
-**Ankit Raj**
-
-Built with ?? using **React Native & Expo**
+<div align="center">
+  <br>
+  <i>Built with ❤️ for perfectly predicted days.</i>
+</div>
