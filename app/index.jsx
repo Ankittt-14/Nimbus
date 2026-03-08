@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
@@ -9,7 +10,7 @@ import { WeatherContext } from "./_layout";
 
 export default function HomeScreen() {
     const { setGlobalCity } = useContext(WeatherContext);
-    const { weather, forecast, loading, refetch } = useWeather();
+    const { weather, forecast, loading, error, refetch } = useWeather();
     const spinAnim = useRef(new Animated.Value(0)).current;
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [refreshing, setRefreshing] = useState(false);
@@ -32,6 +33,24 @@ export default function HomeScreen() {
     }, []);
 
     if (loading) return <SkeletonHome />;
+
+    if (error || !weather) {
+        return (
+            <View style={[styles.container, { backgroundColor: '#0d0800', justifyContent: 'center', alignItems: 'center', padding: 20 }]}>
+                <Feather name="cloud-off" size={64} color="rgba(255,255,255,0.4)" style={{ marginBottom: 20 }} />
+                <Text style={{ color: '#fff', fontSize: 20, fontWeight: '700', marginBottom: 10 }}>Weather Unavailable</Text>
+                <Text style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginBottom: 30 }}>
+                    {error || "Could not retrieve weather data."}
+                </Text>
+                <TouchableOpacity
+                    onPress={onRefresh}
+                    style={{ backgroundColor: '#E8891A', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 20 }}
+                >
+                    <Text style={{ color: '#fff', fontWeight: 'bold' }}>Tap to Retry</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 
     const isNight = weather?.weather[0]?.icon?.endsWith('n');
     const gradient = getGradient(weather?.weather[0]?.main, weather?.weather[0]?.icon);

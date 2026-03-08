@@ -7,7 +7,7 @@ import { useWeather } from "../hooks/useWeather";
 import { formatDay } from "../utils/weatherHelpers";
 
 export default function ForecastScreen() {
-    const { forecast, weather, loading, refetch } = useWeather();
+    const { forecast, weather, loading, error, refetch } = useWeather();
     const [refreshing, setRefreshing] = useState(false);
 
     const onRefresh = async () => {
@@ -18,7 +18,20 @@ export default function ForecastScreen() {
     };
 
     if (loading) return <SkeletonForecast />;
-    if (!forecast || forecast.length === 0) return <SkeletonForecast />;
+    if (error || !forecast || forecast.length === 0) {
+        return (
+            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', padding: 20 }]}>
+                <Feather name="calendar" size={64} color="rgba(255,255,255,0.2)" style={{ marginBottom: 20 }} />
+                <Text style={{ color: '#fff', fontSize: 20, fontWeight: '700', marginBottom: 10 }}>Forecast Unavailable</Text>
+                <Text style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginBottom: 30 }}>
+                    {error || "Unable to load the 7-day forecast data at this time."}
+                </Text>
+                <View style={{ backgroundColor: 'rgba(255,255,255,0.1)', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 20 }}>
+                    <Text style={{ color: 'rgba(255,255,255,0.6)' }}>Pull down to refresh</Text>
+                </View>
+            </View>
+        );
+    }
 
     // Read the coordinates to center the map
     const lat = weather?.coord?.lat || 0;
