@@ -98,7 +98,7 @@ export default function HomeScreen() {
                         {forecast.slice(0, 8).map((item, i) => (
                             <View key={i} style={[styles.hourCard, i === 0 && styles.activeCard]}>
                                 <Text style={styles.hourLabel}>{i === 0 ? "Now" : formatHour(item.dt, weather?.timezone)}</Text>
-                                <Text style={styles.hourIcon}>{getEmoji(item.weather[0].main, item.weather[0].icon)}</Text>
+                                <Feather name={getFeatherIcon(item.weather[0].main, item.weather[0].icon)} size={22} color={getFeatherColor(item.weather[0].main, item.weather[0].icon)} style={{ marginVertical: 4 }} />
                                 <Text style={styles.hourTemp}>{Math.round(item.main.temp)}°</Text>
                             </View>
                         ))}
