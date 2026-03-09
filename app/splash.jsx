@@ -169,9 +169,14 @@ export default function SplashScreen({ onDone }) {
                 </Animated.View>
 
                 {/* Sun core */}
-                <View style={styles.sunCore}>
-                    <View style={styles.sunInner} />
-                </View>
+                <LinearGradient
+                    colors={["#FFFBEA", "#FFE066", "#FF8F00", "#D35400"]}
+                    locations={[0.1, 0.4, 0.8, 1]}
+                    style={styles.sunCore}
+                >
+                    {/* Add an inner highlight for 3D sphere effect */}
+                    <View style={styles.sunHighlight} />
+                </LinearGradient>
             </Animated.View>
 
             {/* ── Horizon line ─────────────────────────────────── */}
@@ -367,24 +372,26 @@ const styles = StyleSheet.create({
 
     // Sun core circle
     sunCore: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        backgroundColor: "#FFB020",
+        width: 90,
+        height: 90,
+        borderRadius: 45,
         alignItems: "center",
-        justifyContent: "center",
-        shadowColor: "#FFD060",
+        justifyContent: "flex-start",
+        paddingTop: 10,
+        shadowColor: "#FFB020",
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 1,
-        shadowRadius: 20,
-        elevation: 10,
+        shadowRadius: 30,
+        elevation: 15,
     },
 
-    sunInner: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
-        backgroundColor: "#FFE060",
+    // 3D reflection highlight
+    sunHighlight: {
+        width: 60,
+        height: 25,
+        borderRadius: 20,
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        transform: [{ scaleY: 0.5 }],
     },
 
     // Horizon gradient fade
