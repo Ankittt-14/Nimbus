@@ -74,9 +74,11 @@ export default function HomeScreen() {
                 </View>
 
                 {/* Spinning animated sun (or moon) */}
-                <View style={styles.sunContainer}>
+                <View style={[styles.sunContainer, { height: 160, justifyContent: 'center' }]}>
                     {isNight && weather?.weather[0]?.main === 'Clear' ? (
-                        <Text style={styles.sunIcon}>🌙</Text>
+                        <Text style={[styles.sunIcon, { textShadowColor: '#fff', textShadowRadius: 10 }]}>🌙</Text>
+                    ) : weather?.weather[0]?.main === 'Clear' ? (
+                        <Sun3D />
                     ) : (
                         <LottieView
                             source={ANIMATIONS[weather?.weather[0]?.main] || ANIMATIONS.Clear}
@@ -167,6 +169,60 @@ function SkeletonHome() {
     );
 }
 
+// Custom 3D Animated Sun for Home Screen
+function Sun3D() {
+    const spinAnim = useRef(new Animated.Value(0)).current;
+    const pulseAnim = useRef(new Animated.Value(0.8)).current;
+
+    useEffect(() => {
+        // Continuous slow rotation for the rays
+        Animated.loop(
+            Animated.timing(spinAnim, {
+                toValue: 1,
+                duration: 15000,
+                useNativeDriver: true,
+            })
+        ).start();
+
+        // Subtle pulsing glow
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(pulseAnim, { toValue: 1, duration: 2000, useNativeDriver: true }),
+                Animated.timing(pulseAnim, { toValue: 0.8, duration: 2000, useNativeDriver: true }),
+            ])
+        ).start();
+    }, []);
+
+    const spin = spinAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", "360deg"],
+    });
+
+    return (
+        <View style={{ width: 150, height: 150, alignItems: 'center', justifyContent: 'center' }}>
+            {/* Pulsing Outer Glow */}
+            <Animated.View style={[sunStyles.sunGlowRing, { opacity: pulseAnim }]} />
+
+            {/* Spinning Rays Array */}
+            <Animated.View style={[sunStyles.raysContainer, { transform: [{ rotate: spin }] }]}>
+                {Array.from({ length: 12 }).map((_, i) => (
+                    <View key={i} style={[sunStyles.ray, { transform: [{ rotate: `${(360 / 12) * i}deg` }] }]} />
+                ))}
+            </Animated.View>
+
+            {/* 3D Sphere Core */}
+            <LinearGradient
+                colors={["#FFFBEA", "#FFE066", "#FF8F00", "#D35400"]}
+                locations={[0.1, 0.4, 0.8, 1]}
+                style={sunStyles.sunCore}
+            >
+                {/* 3D Glass Highlight */}
+                <View style={sunStyles.sunHighlight} />
+            </LinearGradient>
+        </View>
+    );
+}
+
 const ANIMATIONS = {
     Clear: require("../assets/animations/sun.json"),
     Rain: require("../assets/animations/rain.json"),
@@ -219,4 +275,47 @@ const styles = StyleSheet.create({
     hourIcon: { fontSize: 22 },
     hourTemp: { color: "#fff", fontWeight: "700", fontSize: 14 },
     skeletonBlock: { backgroundColor: "rgba(255,255,255,0.08)" },
+});
+
+const sunStyles = StyleSheet.create({
+    sunGlowRing: {
+        position: "absolute",
+        width: 140, height: 140, borderRadius: 70,
+        backgroundColor: "transparent",
+        shadowColor: "#FFB020",
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.8,
+        shadowRadius: 40,
+    },
+    raysContainer: {
+        position: "absolute",
+        width: 130, height: 130,
+        alignItems: "center", justifyContent: "center",
+    },
+    ray: {
+        position: "absolute",
+        width: 4, height: 16,
+        backgroundColor: "#FF8F00",
+        borderRadius: 2,
+        top: 0, left: "50%",
+        marginLeft: -2,
+        opacity: 0.7,
+        transformOrigin: "2px 65px",
+    },
+    sunCore: {
+        width: 80, height: 80, borderRadius: 40,
+        alignItems: "center", justifyContent: "flex-start",
+        paddingTop: 8,
+        shadowColor: "#FFB020",
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 1,
+        shadowRadius: 20,
+        elevation: 10,
+    },
+    sunHighlight: {
+        width: 50, height: 20,
+        borderRadius: 15,
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        transform: [{ scaleY: 0.5 }],
+    },
 });
