@@ -1,6 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from "expo-linear-gradient";
+import LottieView from "lottie-react-native";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Animated, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useWeather } from "../hooks/useWeather";
@@ -72,14 +73,18 @@ export default function HomeScreen() {
                     <View style={styles.bellBtn}><Text>🔔</Text></View>
                 </View>
 
-                {/* Weather Vector Icon */}
-                <View style={[styles.sunContainer, {
-                    width: 150, height: 150, borderRadius: 75,
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    justifyContent: 'center', alignItems: 'center',
-                    borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)'
-                }]}>
-                    <Feather name={getFeatherIcon(weather?.weather[0]?.main, weather?.weather[0]?.icon)} size={72} color={getFeatherColor(weather?.weather[0]?.main, weather?.weather[0]?.icon)} />
+                {/* Spinning animated sun (or moon) */}
+                <View style={styles.sunContainer}>
+                    {isNight && weather?.weather[0]?.main === 'Clear' ? (
+                        <Text style={styles.sunIcon}>🌙</Text>
+                    ) : (
+                        <LottieView
+                            source={ANIMATIONS[weather?.weather[0]?.main] || ANIMATIONS.Clear}
+                            autoPlay
+                            loop
+                            style={{ width: 180, height: 180 }}
+                        />
+                    )}
                 </View>
 
                 {/* Big temperature display */}
@@ -89,17 +94,17 @@ export default function HomeScreen() {
                 <Text style={styles.feels}>Feels like {Math.round(weather?.main?.feels_like)}°</Text>
 
                 {/* Hourly forecast row */}
-                <View style={styles.hourlyBox}>
+                <View style={[styles.hourlyBox, !isNight && { backgroundColor: "rgba(0,0,0,0.2)" }]}>
                     <View style={styles.hourlyHeader}>
-                        <Text style={styles.hourlyTitle}>Hourly Forecast</Text>
+                        <Text style={[styles.hourlyTitle, !isNight && { textShadowColor: 'rgba(0,0,0,0.5)', textShadowRadius: 4 }]}>Hourly Forecast</Text>
                         <Text style={styles.todayTag}>Today</Text>
                     </View>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         {forecast.slice(0, 8).map((item, i) => (
-                            <View key={i} style={[styles.hourCard, i === 0 && styles.activeCard]}>
-                                <Text style={styles.hourLabel}>{i === 0 ? "Now" : formatHour(item.dt, weather?.timezone)}</Text>
+                            <View key={i} style={[styles.hourCard, !isNight && { backgroundColor: "rgba(0,0,0,0.2)" }, i === 0 && styles.activeCard]}>
+                                <Text style={[styles.hourLabel, !isNight && { color: "rgba(255,255,255,0.9)" }]}>{i === 0 ? "Now" : formatHour(item.dt, weather?.timezone)}</Text>
                                 <Feather name={getFeatherIcon(item.weather[0].main, item.weather[0].icon)} size={22} color={getFeatherColor(item.weather[0].main, item.weather[0].icon)} style={{ marginVertical: 4 }} />
-                                <Text style={styles.hourTemp}>{Math.round(item.main.temp)}°</Text>
+                                <Text style={[styles.hourTemp, !isNight && { textShadowColor: 'rgba(0,0,0,0.3)', textShadowRadius: 2 }]}>{Math.round(item.main.temp)}°</Text>
                             </View>
                         ))}
                     </ScrollView>
@@ -161,6 +166,14 @@ function SkeletonHome() {
         </LinearGradient>
     );
 }
+
+const ANIMATIONS = {
+    Clear: require("../assets/animations/sun.json"),
+    Rain: require("../assets/animations/rain.json"),
+    Clouds: require("../assets/animations/cloud.json"),
+    Thunderstorm: require("../assets/animations/thunder.json"),
+    Snow: require("../assets/animations/snow.json"),
+};
 
 function getFeatherIcon(c, icon) {
     if (icon?.endsWith('n') && c === 'Clear') return "moon";
